@@ -8,7 +8,10 @@
 %token TRUE FALSE
 %token PLUS MINUS TIMES DIVIDE EQUAL LESS GREATER ARROW
 %token LPAREN RPAREN
+%token LBRACKET RBRACKET COMMA   (* new tokens *)
 %token EOF
+
+%token LOGISTIC_REGRESSION PREDICT_LOGISTIC KMEANS GET_CLUSTERS
 
 %start main
 %type <Ast.expr> main
@@ -47,9 +50,19 @@ multiplicative_expr:
 
 application_expr:
   | application_expr primary_expr { App($1, $2) }
+  | primary_expr LBRACKET expr RBRACKET { Index($1, $3) }  (* new: indexing *)
   | primary_expr { $1 }
 
 primary_expr:
   | FLOAT { Float($1) }
   | IDENT { Var($1) }
   | LPAREN expr RPAREN { $2 }
+  | LBRACKET expr_list RBRACKET { List(List.rev $2) }
+  | LOGISTIC_REGRESSION LPAREN expr COMMA expr RPAREN { LogisticRegression($3, $5) }
+  | PREDICT_LOGISTIC LPAREN expr COMMA expr RPAREN { PredictLogistic($3, $5) }
+  | KMEANS LPAREN expr COMMA expr RPAREN { KMeans($3, $5) }
+  | GET_CLUSTERS LPAREN expr RPAREN { GetClusters($3) }
+
+expr_list:
+  | expr { [$1] }
+  | expr COMMA expr_list { $1 :: $3 }

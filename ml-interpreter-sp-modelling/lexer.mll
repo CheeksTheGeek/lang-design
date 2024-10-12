@@ -16,6 +16,11 @@ rule read = parse
       | "fun" -> FUN
       | "true" -> TRUE
       | "false" -> FALSE
+      | "logistic_regression" -> LOGISTIC_REGRESSION
+      | "predict_logistic" -> PREDICT_LOGISTIC
+      | "kmeans" -> KMEANS
+      | "get_clusters" -> GET_CLUSTERS
+
       | _ -> IDENT id (* all other identifiers *)
     }
   | "+" { PLUS }
@@ -28,5 +33,8 @@ rule read = parse
   | "->" { ARROW }
   | "(" { LPAREN }
   | ")" { RPAREN }
+  | "[" { LBRACKET }   (* new: list start *)
+  | "]" { RBRACKET }  (* new: list end *)
+  | "," { COMMA }     (* new: comma *)
   | eof { EOF }
   | _ as char { raise (Error (Printf.sprintf "Unknown character: %c" char)) }
