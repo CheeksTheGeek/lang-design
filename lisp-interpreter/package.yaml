@@ -1,0 +1,27 @@
+name:                lisp-interpreter
+version:             0.1.0.0
+github:              "cheeksthegeek/lisp-interpreter"
+license:             BSD3
+author:              "Chaitanya Sharma"
+extra-source-files:  
+  - README.md
+  - LICENSE
+
+executables:
+  lisp-interpreter:
+    main:                Main.hs
+    source-dirs:         src
+
+tests:
+  lisp-interpreter-test:
+    main:                Spec.hs
+    source-dirs:         test
+    dependencies:
+      - lisp-interpreter
+
+dependencies:
+  - base >= 4.7 && < 5
+  - parsec
+  - containers
+  - hspec
+  - mtl
